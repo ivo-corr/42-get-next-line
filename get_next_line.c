@@ -6,20 +6,39 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/08 10:14:10 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/12 09:20:53 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <sys/types.h>
+#include <fcntl.h>
 
 char	*get_next_line(int fd)
 {
-	return (NULL);
+	char	*sbuff;
+
+	sbuff = NULL;
+	sbuff = ft_r_read_line(fd, sbuff);
+	return (sbuff);
 }
 
 int	main(void)
 {
-	char	buff[10];
+	int	myfile = open("README.md", O_RDONLY);
+	int	i;
 
-	read(0, buff, 5);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	get_next_line(myfile);
+	close(myfile);
 }
