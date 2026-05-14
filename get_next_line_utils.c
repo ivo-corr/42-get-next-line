@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/12 13:28:53 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:25:42 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,7 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 	{
 		new = malloc(2 * BUFFER_SIZE * sizeof(char));
 		if (new)
-		{
-			if (bytes == BUFFER_SIZE)
-				ft_strlcpy(new, buff, (2 * BUFFER_SIZE) + 1);
-			else
-				ft_strlcpy(new, buff, bytes);
-		}
+			ft_strlcpy(new, buff, (2 * BUFFER_SIZE) + 1);
 	}
 	else
 	{
@@ -34,16 +29,8 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 		new = malloc(len * sizeof(char));
 		if (new)
 		{
-			if (bytes == BUFFER_SIZE)
-			{
-				ft_strlcpy(new, current, len);
-				ft_strlcat(new, buff, len);
-			}
-			else
-			{
-				ft_strlcpy(new, current, len);
-				ft_strlcat(new, buff, (ft_strchr(current, '\0') - current) + bytes + 1);
-			}
+			ft_strlcpy(new, current, len);
+			ft_strlcat(new, buff, (ft_strchr(current, '\0') - current) + bytes);
 		}
 		free(current);
 	}
@@ -52,49 +39,30 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 	return (new);
 }
 
-char	*ft_r_read_line(int fd, char *sbuff, char buff[BUFFER_SIZE])
+char	*ft_r_read_line(int fd, char *buff, char *sbuff)
 {
+	// static char		buff[BUFFER_SIZE];
 	int				bread;
 
-	if (buff && !sbuff)
+	if (buff[0] && ft_strchr(buff, '\n'))
+	{
+		ft_strlcpy(buff, ft_strchr(buff, '\n') + 1, BUFFER_SIZE);
 		sbuff = expand_sbuff(sbuff, buff, BUFFER_SIZE);
-	bread = read(fd, buff, BUFFER_SIZE);
-	if ((bread <= 0) || (!buff[0] && !sbuff))
+		if (ft_strchr(buff, '\n'))
+			return (sbuff);
+	}
+	bread = read(fd, &buff, BUFFER_SIZE);
+	if ((bread <= 0) && (!buff[0] && !sbuff))
 		return (NULL);
 	if (ft_strchr(buff, '\n') || bread < BUFFER_SIZE)
 		sbuff = expand_sbuff(sbuff, buff, bread);
 	else
 	{
 		sbuff = expand_sbuff(sbuff, buff, bread);
-		sbuff = ft_r_read_line(fd, sbuff, buff);
+		sbuff = ft_r_read_line(fd, buff, sbuff);
 	}
 	return (sbuff);
 }
-
-// char	*ft_r_read_line(int fd, char *sbuff)
-// {
-// 	// static char		buff[BUFFER_SIZE];
-// 	int				bread;
-
-// 	// if (buff[0] && ft_strchr(buff, '\n'))
-// 	// {
-// 	// 	ft_strlcpy(buff, ft_strchr(buff, '\n') + 1, BUFFER_SIZE);
-// 	// 	sbuff = expand_sbuff(sbuff, buff, BUFFER_SIZE);
-// 	// 	if (ft_strchr(buff, '\n'))
-// 	// 		return (sbuff);
-// 	// }
-// 	bread = read(fd, &buff, BUFFER_SIZE);
-// 	if ((bread <= 0) && (!buff[0] && !sbuff))
-// 		return (NULL);
-// 	if (ft_strchr(buff, '\n'))
-// 		sbuff = expand_sbuff(sbuff, buff, bread);
-// 	else
-// 	{
-// 		sbuff = expand_sbuff(sbuff, buff, bread);
-// 		sbuff = ft_r_read_line(fd, sbuff);
-// 	}
-// 	return (sbuff);
-// }
 
 // char	*ft_r_read_line(int fd, char *sbuff)
 // {
@@ -179,23 +147,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		*(dst + i) = '\0';
 	return ((ft_strchr(src, '\0') - src));
 }
-// no static buffer
-
-// void	ft_r_read_line(int fd)
-// {
-// 	static int	current_index = 0;
-// 	char		next_char;
-
-// 	if (read(fd, &next_char, 1))
-// 	{
-// 		if (next_char == '\n')
-// 		{
-// 			write (1, &next_char, 1);
-// 		}
-// 		else
-// 		{
-// 			write (1, &next_char, 1);
-// 			ft_r_read_line(fd);
-// 		}
-// 	}
-// }

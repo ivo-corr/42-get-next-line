@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/12 13:28:19 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:23:38 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,17 @@
 
 char	*get_next_line(int fd)
 {
-	static char	buff[BUFFER_SIZE];
-	char		*sbuff;
+	static char		buff[BUFFER_SIZE];
+	char			*sbuff;
 
 	sbuff = NULL;
-	if (ft_strchr(buff, '\n') && ft_strchr(ft_strchr(buff, '\n') + 1, '\n'))
-	{
-		ft_strlcpy(buff, ft_strchr(buff, '\n') + 1, BUFFER_SIZE);
-		sbuff = expand_sbuff(sbuff, buff, BUFFER_SIZE);
-		return (sbuff);
-	}
-	else if (ft_strchr(buff, '\n'))
-		ft_strlcpy(buff, ft_strchr(buff, '\n') + 1, BUFFER_SIZE);
-	sbuff = ft_r_read_line(fd, sbuff, buff);
+	sbuff = ft_r_read_line(fd, buff, sbuff);
 	return (sbuff);
 }
 
 // int	main(void)
-// { 
-// 	int	myfile = open("README.md", O_RDONLY);
+// {
+// 	int	myfile = open("test.txt", O_RDONLY);
 // 	int	i;
 
 // 	get_next_line(myfile);
