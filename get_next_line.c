@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/14 11:23:38 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:32:32 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 
 // int	main(void)
 // {
-// 	int	myfile = open("test.txt", O_RDONLY);
+// 	int	myfile = open("files/41_with_nl", O_RDONLY);
 // 	int	i;
 
 // 	get_next_line(myfile);

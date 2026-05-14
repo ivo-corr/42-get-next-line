@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/14 11:25:42 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:32:05 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 char	*ft_r_read_line(int fd, char *buff, char *sbuff)
 {
 	// static char		buff[BUFFER_SIZE];
-	int				bread;
+	int	bread;
 
 	if (buff[0] && ft_strchr(buff, '\n'))
 	{
@@ -51,7 +51,7 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff)
 		if (ft_strchr(buff, '\n'))
 			return (sbuff);
 	}
-	bread = read(fd, &buff, BUFFER_SIZE);
+	bread = read(fd, buff, BUFFER_SIZE);
 	if ((bread <= 0) && (!buff[0] && !sbuff))
 		return (NULL);
 	if (ft_strchr(buff, '\n') || bread < BUFFER_SIZE)
