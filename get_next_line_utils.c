@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/14 14:08:52 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/14 14:46:55 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 	else
 	{
 		len = (ft_strchr(current, '\0') - current);
-		new = malloc((len + BUFFER_SIZE + 1) * sizeof(char));
+		new = malloc((len + BUFFER_SIZE + 2)* sizeof(char));
 		if (new)
 		{
 			ft_strlcpy(new, current, len + BUFFER_SIZE + 1);
