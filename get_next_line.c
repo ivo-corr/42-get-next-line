@@ -6,13 +6,11 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/14 11:32:32 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/14 14:25:01 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <sys/types.h>
-#include <fcntl.h>
 
 char	*get_next_line(int fd)
 {
@@ -21,25 +19,10 @@ char	*get_next_line(int fd)
 
 	sbuff = NULL;
 	sbuff = ft_r_read_line(fd, buff, sbuff);
+	if (!sbuff)
+		return (NULL);
+	ft_strlcat(sbuff, "\n", ft_strchr(sbuff, '\0') - sbuff + 1);
+	if (ft_strchr(buff, '\n'))
+		ft_strlcpy(buff, ft_strchr(buff, '\n'), BUFFER_SIZE);
 	return (sbuff);
 }
-
-// int	main(void)
-// {
-// 	int	myfile = open("files/41_with_nl", O_RDONLY);
-// 	int	i;
-
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	get_next_line(myfile);
-// 	close(myfile);
-// }
