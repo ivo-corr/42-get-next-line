@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/15 12:11:30 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/15 12:29:07 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 	len = ft_strchr(sbuff, '\0') - sbuff;
 	if (bread == BUFFER_SIZE)
 		ft_strlcat(sbuff, "\n", len + 2);
-	if (ft_strchr(buff, '\n'))
-		ft_strlcpy(buff, ft_strchr(buff, '\n'), BUFFER_SIZE);
+	if (ft_strchr(buff, NL))
+		ft_strlcpy(buff, ft_strchr(buff, NL), BUFFER_SIZE);
 	return (sbuff);
 }
