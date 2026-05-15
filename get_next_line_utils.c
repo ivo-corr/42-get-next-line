@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/14 14:46:55 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/15 12:21:09 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 	(void)bytes;
 	if (!current)
 	{
-		new = malloc((BUFFER_SIZE + 1) * sizeof(char));
+		new = malloc((BUFFER_SIZE + 2) * sizeof(char));
 		if (new)
-			ft_strlcpy(new, buff, BUFFER_SIZE + 1);
+			ft_strlcpy(new, buff, BUFFER_SIZE + 2);
 	}
 	else
 	{
 		len = (ft_strchr(current, '\0') - current);
-		new = malloc((len + BUFFER_SIZE + 2)* sizeof(char));
+		new = malloc((len + BUFFER_SIZE + 2) * sizeof(char));
 		if (new)
 		{
 			ft_strlcpy(new, current, len + BUFFER_SIZE + 1);
@@ -41,10 +41,8 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 	return (new);
 }
 
-char	*ft_r_read_line(int fd, char *buff, char *sbuff)
+char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 {
-	int	bread;
-
 	if (buff[0] && ft_strchr(buff, '\n'))
 	{
 		sbuff = expand_sbuff(sbuff, buff, BUFFER_SIZE);
@@ -52,17 +50,17 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff)
 		if (ft_strchr(buff, '\n'))
 			return (sbuff);
 	}
-	bread = read(fd, buff, BUFFER_SIZE);
-	if ((bread <= 0) && (!buff[0] && !sbuff))
+	*bread = read(fd, buff, BUFFER_SIZE);
+	if ((*bread <= 0) && (!buff[0] && !sbuff))
 		return (NULL);
-	if (bread == 0)
+	if (*bread == 0)
 		return (sbuff);
-	if (ft_strchr(buff, '\n') || bread < BUFFER_SIZE)
-		sbuff = expand_sbuff(sbuff, buff, bread);
+	if (ft_strchr(buff, '\n') || *bread < BUFFER_SIZE)
+		sbuff = expand_sbuff(sbuff, buff, *bread);
 	else
 	{
-		sbuff = expand_sbuff(sbuff, buff, bread);
-		sbuff = ft_r_read_line(fd, buff, sbuff);
+		sbuff = expand_sbuff(sbuff, buff, *bread);
+		sbuff = ft_r_read_line(fd, buff, sbuff, bread);
 	}
 	return (sbuff);
 }
@@ -114,6 +112,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	i = 0;
 	while (i < (size - 1) && src[i])
 	{
+		if (*(src + i) == '\n')
+			break ;
 		*(dst + i) = *(src + i);
 		i++;
 	}
