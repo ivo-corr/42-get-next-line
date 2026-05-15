@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/15 12:21:09 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/15 12:25:06 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ char	*expand_sbuff(char *current, char *buff, int bytes)
 
 char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 {
-	if (buff[0] && ft_strchr(buff, '\n'))
+	if (buff[0] && ft_strchr(buff, NL))
 	{
 		sbuff = expand_sbuff(sbuff, buff, BUFFER_SIZE);
-		ft_strlcpy(buff, ft_strchr(buff, '\n') + 1, BUFFER_SIZE);
-		if (ft_strchr(buff, '\n'))
+		ft_strlcpy(buff, ft_strchr(buff, NL) + 1, BUFFER_SIZE);
+		if (ft_strchr(buff, NL))
 			return (sbuff);
 	}
 	*bread = read(fd, buff, BUFFER_SIZE);
@@ -55,7 +55,7 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 		return (NULL);
 	if (*bread == 0)
 		return (sbuff);
-	if (ft_strchr(buff, '\n') || *bread < BUFFER_SIZE)
+	if (ft_strchr(buff, NL) || *bread < BUFFER_SIZE)
 		sbuff = expand_sbuff(sbuff, buff, *bread);
 	else
 	{
@@ -112,7 +112,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	i = 0;
 	while (i < (size - 1) && src[i])
 	{
-		if (*(src + i) == '\n')
+		if (*(src + i) == NL)
 			break ;
 		*(dst + i) = *(src + i);
 		i++;
