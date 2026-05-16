@@ -12,21 +12,43 @@
 
 #include "get_next_line.h"
 
+char	*extract_line(char *stash)
+{
+	char	*l;
+	int		slen;
+
+	slen = ft_strchr(stash, '\0') - stash;
+	if (ft_strchr(stash, '\n'))
+	{
+		l = malloc((ft_strchr(stash, '\n') - stash) + 2 * sizeof(char));
+		if (!l)
+			return (NULL);
+		ft_strlcpy(l, stash, ft_strchr(stash, '\n') - stash + 1);
+		ft_strlcat(l, "\n", (ft_strchr(stash, '\n') - stash) + 2);
+		ft_strlcpy(stash, ft_strchr(stash, NL) + 1, slen + 2);
+		return (l);
+	}
+	else
+		return (stash);
+}
+
 char	*get_next_line(int fd)
 {
 	static char		buff[BUFFER_SIZE];
-	static int		bread;
-	char			*sbuff;
-	int				len;
+	static int		bread = BUFFER_SIZE;
+	static char		*sbuff = NULL;
 
-	sbuff = NULL;
+	if (bread <= 0)
+		return (NULL);
+	if ((sbuff && ft_strchr(sbuff, '\n')) || bread == 0)
+		return (extract_line(sbuff));
 	sbuff = ft_r_read_line(fd, buff, sbuff, &bread);
 	if (!sbuff)
 		return (NULL);
-	len = ft_strchr(sbuff, '\0') - sbuff;
-	if (bread == BUFFER_SIZE)
-		ft_strlcat(sbuff, "\n", len + 2);
-	if (ft_strchr(buff, NL))
-		ft_strlcpy(buff, ft_strchr(buff, NL) + 1, BUFFER_SIZE);
-	return (sbuff);
+	if (*sbuff == '\0' || bread == -1)
+	{
+		free (sbuff);
+		return (NULL);
+	}
+	return (extract_line(sbuff));
 }
