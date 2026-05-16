@@ -19,16 +19,17 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 1
 # endif
 
 # define NL '\n'
 
 char	*get_next_line(int fd);
 char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread);
-char	*expand_sbuff(char *current, char *buff, int bytes);
+char	*expand_sbuff(char *current, char *buff);
 char	*ft_strchr(const char *s, int c);
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+void	ft_strlcat(char *dst, const char *src, size_t size);
+void	ft_strlcpy(char *dst, const char *src, size_t size);
+char	*extract_line(char *stash);
 
 #endif
