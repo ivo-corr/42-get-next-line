@@ -6,18 +6,11 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/18 15:16:05 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:47:23 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-static void	free_stash(char *sbuff)
-{
-	if (sbuff)
-		free(sbuff);
-	sbuff = NULL;
-}
 
 static char	*extract_line(char *stash)
 {
@@ -30,8 +23,7 @@ static char	*extract_line(char *stash)
 		l = malloc((ft_strchr(stash, '\n') - stash) + 2 * sizeof(char));
 		if (!l)
 		{
-			free_stash(stash);
-			return (NULL);
+			return (free_stash(stash));
 		}
 		ft_cpycat(l, stash, ft_strchr(stash, '\n') - stash + 1, 0);
 		ft_cpycat(l, "\n", (ft_strchr(stash, '\n') - stash) + 2, 1);
@@ -59,8 +51,7 @@ char	*get_next_line(int fd)
 	if (!sbuff || *sbuff == '\0' || bread == -1)
 	{
 		bread = BUFFER_SIZE;
-		free_stash(sbuff);
-		return (NULL);
+		return (free_stash(sbuff));
 	}
 	return (extract_line(sbuff));
 }

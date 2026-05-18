@@ -6,11 +6,19 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/18 16:39:37 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:47:36 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	*free_stash(char *sbuff)
+{
+	if (sbuff)
+		free(sbuff);
+	sbuff = NULL;
+	return (NULL);
+}
 
 char	*expand_sbuff(char *current, char *buff)
 {
@@ -43,12 +51,7 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 	*bread = read(fd, buff, BUFFER_SIZE);
 	buff[*bread] = '\0';
 	if (*bread < 0)
-	{
-		if (sbuff)
-			free(sbuff);
-		sbuff = NULL;
-		return (NULL);
-	}
+		return (free_stash(sbuff));
 	if (*bread == 0)
 		return (sbuff);
 	if (ft_strchr(buff, NL))
