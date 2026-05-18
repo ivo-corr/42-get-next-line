@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/15 16:29:39 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/18 11:37:20 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*expand_sbuff(char *current, char *buff)
 			ft_strlcat(new, buff, len + BUFFER_SIZE + 1);
 		}
 		free(current);
+		current = NULL;
 	}
 	return (new);
 }
@@ -42,7 +43,12 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 	*bread = read(fd, buff, BUFFER_SIZE);
 	buff[*bread] = '\0';
 	if (*bread < 0)
+	{
+		if (sbuff)
+			free(sbuff);
+		sbuff = NULL;
 		return (NULL);
+	}
 	if (*bread == 0)
 		return (sbuff);
 	if (ft_strchr(buff, NL))

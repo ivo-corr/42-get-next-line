@@ -6,13 +6,20 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/15 16:28:25 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/18 11:37:19 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*extract_line(char *stash)
+static void	free_stash(char *sbuff)
+{
+	if (sbuff)
+		free(sbuff);
+	sbuff = NULL;
+}
+
+static char	*extract_line(char *stash)
 {
 	char	*l;
 	int		slen;
@@ -22,7 +29,10 @@ char	*extract_line(char *stash)
 	{
 		l = malloc((ft_strchr(stash, '\n') - stash) + 2 * sizeof(char));
 		if (!l)
+		{
+			free_stash(stash);
 			return (NULL);
+		}
 		ft_strlcpy(l, stash, ft_strchr(stash, '\n') - stash + 1);
 		ft_strlcat(l, "\n", (ft_strchr(stash, '\n') - stash) + 2);
 		ft_strlcpy(stash, ft_strchr(stash, NL) + 1, slen + 2);
@@ -39,15 +49,17 @@ char	*get_next_line(int fd)
 	static char		*sbuff = NULL;
 
 	if (bread <= 0)
+	{
+		bread = BUFFER_SIZE;
 		return (NULL);
-	if ((sbuff && ft_strchr(sbuff, '\n')) || bread == 0)
+	}
+	if ((sbuff && ft_strchr(sbuff, '\n')))
 		return (extract_line(sbuff));
 	sbuff = ft_r_read_line(fd, buff, sbuff, &bread);
-	if (!sbuff)
-		return (NULL);
-	if (*sbuff == '\0' || bread == -1)
+	if (!sbuff || *sbuff == '\0' || bread == -1)
 	{
-		free (sbuff);
+		bread = BUFFER_SIZE;
+		free_stash(sbuff);
 		return (NULL);
 	}
 	return (extract_line(sbuff));
