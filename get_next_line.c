@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/18 11:37:19 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:16:05 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static char	*extract_line(char *stash)
 			free_stash(stash);
 			return (NULL);
 		}
-		ft_strlcpy(l, stash, ft_strchr(stash, '\n') - stash + 1);
-		ft_strlcat(l, "\n", (ft_strchr(stash, '\n') - stash) + 2);
-		ft_strlcpy(stash, ft_strchr(stash, NL) + 1, slen + 2);
+		ft_cpycat(l, stash, ft_strchr(stash, '\n') - stash + 1, 0);
+		ft_cpycat(l, "\n", (ft_strchr(stash, '\n') - stash) + 2, 1);
+		ft_cpycat(stash, ft_strchr(stash, NL) + 1, slen + 2, 0);
 		return (l);
 	}
 	else

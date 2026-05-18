@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:44 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/18 11:37:22 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:13:15 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ char	*expand_sbuff(char *current, char *buff);
 char	*ft_strchr(const char *s, int c);
 void	ft_strlcat(char *dst, const char *src, size_t size);
 void	ft_strlcpy(char *dst, const char *src, size_t size);
+void	ft_cpycat(char *dst, const char *src, size_t size, int m);
 
 #endif
