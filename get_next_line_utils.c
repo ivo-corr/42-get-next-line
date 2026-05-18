@@ -6,11 +6,19 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/15 16:29:39 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:47:36 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	*free_stash(char *sbuff)
+{
+	if (sbuff)
+		free(sbuff);
+	sbuff = NULL;
+	return (NULL);
+}
 
 char	*expand_sbuff(char *current, char *buff)
 {
@@ -21,7 +29,7 @@ char	*expand_sbuff(char *current, char *buff)
 	{
 		new = malloc((BUFFER_SIZE + 2) * sizeof(char));
 		if (new)
-			ft_strlcpy(new, buff, BUFFER_SIZE + 2);
+			ft_cpycat(new, buff, BUFFER_SIZE + 2, 0);
 	}
 	else
 	{
@@ -29,10 +37,11 @@ char	*expand_sbuff(char *current, char *buff)
 		new = malloc((len + BUFFER_SIZE + 2) * sizeof(char));
 		if (new)
 		{
-			ft_strlcpy(new, current, len + BUFFER_SIZE + 1);
-			ft_strlcat(new, buff, len + BUFFER_SIZE + 1);
+			ft_cpycat(new, current, len + BUFFER_SIZE + 1, 0);
+			ft_cpycat(new, buff, len + BUFFER_SIZE + 1, 1);
 		}
 		free(current);
+		current = NULL;
 	}
 	return (new);
 }
@@ -42,7 +51,7 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 	*bread = read(fd, buff, BUFFER_SIZE);
 	buff[*bread] = '\0';
 	if (*bread < 0)
-		return (NULL);
+		return (free_stash(sbuff));
 	if (*bread == 0)
 		return (sbuff);
 	if (ft_strchr(buff, NL))
@@ -74,37 +83,29 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-void	ft_strlcat(char *dst, const char *src, size_t size)
+void	ft_cpycat(char *dst, const char *src, size_t size, int m)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	while (dst[i])
+	while ((m == 0 && !(size == 0)) && i < (size - 1) && src[i])
+	{
+		dst[i] = src[i];
 		i++;
-	j = 0;
-	while (size != 0 && (i + j < size - 1) && src[j])
-	{
-		dst[i + j] = src[j];
-		j++;
 	}
-	if (i < size)
-		dst[i + j] = '\0';
-}
-
-void	ft_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t	i;
-
-	if (!(size == 0))
+	if (m == 0 && size > 0)
+		*(dst + i) = '\0';
+	else if (m == 1)
 	{
-		i = 0;
-		while (i < (size - 1) && src[i])
+		i = ft_strchr(dst, '\0') - dst;
+		j = 0;
+		while (size != 0 && (i + j < size - 1) && src[j])
 		{
-			*(dst + i) = *(src + i);
-			i++;
+			dst[i + j] = src[j];
+			j++;
 		}
-		if (size > 0)
-			*(dst + i) = '\0';
+		if (i < size)
+			dst[i + j] = '\0';
 	}
 }
