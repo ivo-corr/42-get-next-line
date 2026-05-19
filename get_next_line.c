@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/18 16:47:23 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:09:19 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*extract_line(char *stash)
 		l = malloc((ft_strchr(stash, '\n') - stash) + 2 * sizeof(char));
 		if (!l)
 		{
-			return (free_stash(stash));
+			return (free_stash(&stash));
 		}
 		ft_cpycat(l, stash, ft_strchr(stash, '\n') - stash + 1, 0);
 		ft_cpycat(l, "\n", (ft_strchr(stash, '\n') - stash) + 2, 1);
@@ -42,7 +42,7 @@ char	*get_next_line(int fd)
 
 	if (bread <= 0)
 	{
-		bread = BUFFER_SIZE;
+		// bread = BUFFER_SIZE;
 		return (NULL);
 	}
 	if ((sbuff && ft_strchr(sbuff, '\n')))
@@ -51,7 +51,7 @@ char	*get_next_line(int fd)
 	if (!sbuff || *sbuff == '\0' || bread == -1)
 	{
 		bread = BUFFER_SIZE;
-		return (free_stash(sbuff));
+		return (free_stash(&sbuff));
 	}
 	return (extract_line(sbuff));
 }
