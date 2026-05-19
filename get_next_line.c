@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/18 16:47:23 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/19 09:48:37 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*get_next_line(int fd)
 
 	if (bread <= 0)
 	{
-		bread = BUFFER_SIZE;
+		// bread = BUFFER_SIZE;
 		return (NULL);
 	}
 	if ((sbuff && ft_strchr(sbuff, '\n')))
