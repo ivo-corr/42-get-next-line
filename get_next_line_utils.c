@@ -6,17 +6,17 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/19 09:48:12 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/20 10:33:18 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*free_stash(char *sbuff)
+void	*free_stash(char **sbuff)
 {
-	if (sbuff)
-		free(sbuff);
-	sbuff = NULL;
+	if (*sbuff)
+		free(*sbuff);
+	*sbuff = NULL;
 	return (NULL);
 }
 
@@ -40,7 +40,7 @@ char	*expand_sbuff(char *current, char *buff)
 			ft_cpycat(new, current, len + BUFFER_SIZE + 1, 0);
 			ft_cpycat(new, buff, len + BUFFER_SIZE + 1, 1);
 		}
-		free_stash(current);
+		free_stash(&current);
 	}
 	return (new);
 }
@@ -49,10 +49,10 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 {
 	*bread = read(fd, buff, BUFFER_SIZE);
 	if (*bread < 0)
-		return (free_stash(sbuff));
-	buff[*bread] = '\0';
+		return (free_stash(&sbuff));
 	if (*bread == 0)
 		return (sbuff);
+	buff[*bread] = '\0';
 	if (ft_strchr(buff, NL))
 	{
 		sbuff = expand_sbuff(sbuff, buff);

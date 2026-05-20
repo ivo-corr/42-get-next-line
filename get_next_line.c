@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:32 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/19 09:48:37 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/20 10:23:19 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*extract_line(char *stash)
 		l = malloc((ft_strchr(stash, '\n') - stash) + 2 * sizeof(char));
 		if (!l)
 		{
-			return (free_stash(stash));
+			return (free_stash(&stash));
 		}
 		ft_cpycat(l, stash, ft_strchr(stash, '\n') - stash + 1, 0);
 		ft_cpycat(l, "\n", (ft_strchr(stash, '\n') - stash) + 2, 1);
@@ -31,7 +31,14 @@ static char	*extract_line(char *stash)
 		return (l);
 	}
 	else
-		return (stash);
+	{
+		l = malloc((ft_strchr(stash, '\0') - stash) + 2 * sizeof(char));
+		if (!l)
+			return (free_stash(&stash));
+		ft_cpycat(l, stash, slen + 2, 0);
+		*stash = '\0';
+		return (l);
+	}
 }
 
 char	*get_next_line(int fd)
@@ -40,18 +47,13 @@ char	*get_next_line(int fd)
 	static int		bread = BUFFER_SIZE;
 	static char		*sbuff = NULL;
 
-	if (bread <= 0)
-	{
-		// bread = BUFFER_SIZE;
-		return (NULL);
-	}
 	if ((sbuff && ft_strchr(sbuff, '\n')))
 		return (extract_line(sbuff));
 	sbuff = ft_r_read_line(fd, buff, sbuff, &bread);
 	if (!sbuff || *sbuff == '\0' || bread == -1)
 	{
 		bread = BUFFER_SIZE;
-		return (free_stash(sbuff));
+		return (free_stash(&sbuff));
 	}
 	return (extract_line(sbuff));
 }

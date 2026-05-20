@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:44 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/19 09:36:52 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/19 10:27:10 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread);
 char	*expand_sbuff(char *current, char *buff);
 char	*ft_strchr(const char *s, int c);
 void	ft_cpycat(char *dst, const char *src, size_t size, int m);
-void	*free_stash(char *sbuff);
+void	*free_stash(char **sbuff);
 
 #endif
