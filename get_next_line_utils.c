@@ -6,7 +6,7 @@
 /*   By: icorrale <icorrale@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 09:57:35 by icorrale          #+#    #+#             */
-/*   Updated: 2026/05/19 10:26:49 by icorrale         ###   ########.fr       */
+/*   Updated: 2026/05/21 11:09:30 by icorrale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,24 @@ char	*expand_sbuff(char *current, char *buff)
 
 	if (!current)
 	{
-		new = malloc((BUFFER_SIZE + 2) * sizeof(char));
-		if (new)
-			ft_cpycat(new, buff, BUFFER_SIZE + 2, 0);
+		new = malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (!new)
+			return (NULL);
+		else
+			ft_cpycat(new, buff, BUFFER_SIZE + 1, 0);
 	}
 	else
 	{
 		len = (ft_strchr(current, '\0') - current);
-		new = malloc((len + BUFFER_SIZE + 2) * sizeof(char));
-		if (new)
+		new = malloc((len + BUFFER_SIZE + 1) * sizeof(char));
+		if (!new)
+			return (free(current), NULL);
+		else
 		{
-			ft_cpycat(new, current, len + BUFFER_SIZE + 1, 0);
+			ft_cpycat(new, current, len + BUFFER_SIZE, 0);
 			ft_cpycat(new, buff, len + BUFFER_SIZE + 1, 1);
 		}
-		free_stash(&current);
+		free(current);
 	}
 	return (new);
 }
@@ -49,20 +53,17 @@ char	*ft_r_read_line(int fd, char *buff, char *sbuff, int *bread)
 {
 	*bread = read(fd, buff, BUFFER_SIZE);
 	if (*bread < 0)
-		return (free_stash(&sbuff));
-	buff[*bread] = '\0';
+		return (free(sbuff), NULL);
 	if (*bread == 0)
 		return (sbuff);
+	buff[*bread] = '\0';
+	sbuff = expand_sbuff(sbuff, buff);
+	if (!sbuff)
+		return (NULL);
 	if (ft_strchr(buff, NL))
-	{
-		sbuff = expand_sbuff(sbuff, buff);
 		return (sbuff);
-	}
 	else
-	{
-		sbuff = expand_sbuff(sbuff, buff);
 		sbuff = ft_r_read_line(fd, buff, sbuff, bread);
-	}
 	return (sbuff);
 }
 
